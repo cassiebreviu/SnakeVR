@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "noResolve": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "isolatedModules": false,
+    "lib": ["dom", "es2015.promise", "es5"],
+    "declaration": true,
+    "outDir": "./d.ts"
+  },
+  "files": ["./src/index.ts"]
+}
