@@ -117,54 +117,31 @@ function registerSnakeController(vrHelper) {
   let distance = snakeSpeed * speedDelta * deltaTime;
 
   vrHelper.onControllerMeshLoaded.add((webVRController: WebVRController) => {
-    webVRController.onleftstickchanged((stickValues: StickValues) => {
-      //adding this because the on left stick fires for both right and left for some reason
-      console.log("x " + stickValues.x);
-      console.log("y " + stickValues.y);
-      //move up and right
-      if (stickValues.x > 0 && stickValues.y > 0) {
-        console.log("move up and right");
-        snake.position.x = snake.position.x + distance;
-        snake.position.y = snake.position.y + distance;
+    webVRController.onPadValuesChangedObservable.add(
+      (stickValues: StickValues) => {
+        //adding this because the on left stick fires for both right and left for some reason
+        console.log("x " + stickValues.x);
+        console.log("y " + stickValues.y);
+        if (stickValues.x > 0) {
+          console.log("move right");
+          snake.position.x = snake.position.x + distance;
+        }
+        //move up
+        else if (stickValues.y > 0) {
+          console.log("move up");
+          snake.position.y = snake.position.y + distance;
+        }
+        //move left
+        else if (stickValues.x < 0) {
+          console.log("move left");
+          snake.position.x = snake.position.x - distance;
+        }
+        //move down
+        else if (stickValues.y < 0) {
+          console.log("move down");
+          snake.position.y = snake.position.y - distance;
+        }
       }
-      //move down and right
-      else if (stickValues.x < 0 && stickValues.y > 0) {
-        console.log("move down and right");
-        snake.position.x = snake.position.x + distance;
-        snake.position.y = snake.position.y - distance;
-      }
-      // move up and left
-      else if (stickValues.x > 0 && stickValues.y < 0) {
-        console.log("move up and left");
-        snake.position.x = snake.position.x - distance;
-        snake.position.y = snake.position.y + distance;
-      }
-      // move down and left
-      else if (stickValues.x < 0 && stickValues.y < 0) {
-        console.log("move down and left");
-        snake.position.x = snake.position.x - distance;
-        snake.position.y = snake.position.y - distance;
-      }
-      // move right
-      else if (stickValues.x > 0) {
-        console.log("move right");
-        snake.position.x = snake.position.x + distance;
-      }
-      //move up
-      else if (stickValues.y > 0) {
-        console.log("move up");
-        snake.position.y = snake.position.y + distance;
-      }
-      //move left
-      else if (stickValues.x < 0) {
-        console.log("move left");
-        snake.position.x = snake.position.x - distance;
-      }
-      //move down
-      else if (stickValues.y < 0) {
-        console.log("move down");
-        snake.position.y = snake.position.y - distance;
-      }
-    });
+    );
   });
 }
