@@ -23,7 +23,8 @@ import { sleep } from "./noms";
 export function createSnake(
   scene: Scene,
   snakeLength: number,
-  snakeBody: Array<Mesh>
+  snakeBody: Array<Mesh>,
+  snake: Mesh
 ) {
   var mat1 = new StandardMaterial("mat0", scene);
   mat1.diffuseTexture = new Texture("https://i.imgur.com/3ylrOlA.jpg", scene);
