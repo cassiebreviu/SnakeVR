@@ -1,11 +1,6 @@
-# WebVR Babylonjs Webpack TypeScript Starter Project
-Starter project using babylonjs, webpack, and typescript.
+# WebVR Babylonjs Snake VR
 
-### Steps to Run Starter Project
-Clone the repo <br>
-`git clone https://github.com/cassieview/babylonjs-webpack-typescript-starter-project.git`
-<br>
-`cd babylonjs-webpack-typescript-starter-project`
+### Steps to Run this Project
 
 Install packages <br>
 `npm install`
