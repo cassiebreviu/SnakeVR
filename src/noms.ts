@@ -12,55 +12,74 @@ import {
 import { addParticlesToMesh, removeParticlesFromMesh } from "./particles";
 import { incrementScore } from "./score";
 
-// export function addNom(scene: Scene, snake: Mesh) {
-//   //meshName is string name of model file "apple.babylon"
-//   //var meshOptions = ["grapes.babylon", "apple.babylon", "orange.babylon"];
+export function addNom(scene: Scene, snake: Mesh, snakeSpeed: number) {
+  //meshName is string name of model file "apple.babylon"
+  //var meshOptions = ["grapes.babylon", "apple.babylon", "orange.babylon"];
 
-//   var food = MeshBuilder.CreateSphere(
-//     "sphere1",
-//     { diameter: 0.4, segments: 16 },
-//     scene
-//   );
+  var food = addGrapesNom(scene);
+  if (food === null) {
+    food = MeshBuilder.CreateSphere(
+      "sphere1",
+      { diameter: 0.4, segments: 16 },
+      scene
+    );
+  }
 
-//   food.position = new Vector3(
-//     Math.random() * 10 - 5,
-//     Math.random() * 10 - 5,
-//     Math.random() * 10 - 5
-//   );
-
-//   // Intersections
-//   food.actionManager = new ActionManager(scene);
-//   food.actionManager.registerAction(
-//     new ExecuteCodeAction(
-//       {
-//         trigger: ActionManager.OnIntersectionEnterTrigger,
-//         parameter: snake,
-//       },
-//       function () {
-//         var particleSystem = addParticlesToMesh(food, scene);
-//         scene.removeMesh(food);
-//         sleep(250).then(() => {
-//           removeParticlesFromMesh(particleSystem);
-//           incrementScore();
-//           //add new mesh length to snake
-
-//           //increase speed
-//           //add a new nom
-//           addNom(scene, snake);
-//         });
-//       }
-//     )
-//   );
-// }
-//TODO: get custom mesh to work
-export function addGrapesNom(scene: Scene) {
-  SceneLoader.ImportMesh(
-    "",
-    "/assets/grapes/",
-    "grapes.babylon",
-    scene,
-    function (grapes) {}
+  var foodMaterial = new StandardMaterial("foodMaterial", scene);
+  foodMaterial.diffuseTexture = new Texture(
+    "https://i.imgur.com/3MulZNm.png",
+    scene
   );
+  food.material = foodMaterial;
+  food.position = new Vector3(Math.random(), Math.random(), Math.random());
+
+  // Intersections
+  food.actionManager = new ActionManager(scene);
+  food.actionManager.registerAction(
+    new ExecuteCodeAction(
+      {
+        trigger: ActionManager.OnIntersectionEnterTrigger,
+        parameter: snake,
+      },
+      function () {
+        var particleSystem = addParticlesToMesh(food, scene);
+        scene.removeMesh(food);
+        sleep(250).then(() => {
+          removeParticlesFromMesh(particleSystem);
+          let currentScore = incrementScore();
+          //add new mesh length to snake
+          var snakeLink = MeshBuilder.CreateBox(
+            "snake01",
+            {
+              size: 1,
+            },
+            scene
+          );
+          //TODO: stop snake movement to add mesh
+          let currentSpeed = snakeSpeed;
+          snakeSpeed = 0;
+          snakeLink.position.x = snake.position.x + currentScore;
+          snakeLink.position.y = snake.position.y;
+          snakeLink.position.z = snake.position.z;
+          snake.addChild(snakeLink);
+
+          //increase speed
+          snakeSpeed = currentSpeed * 2;
+          //add a new nom
+          addNom(scene, snake, snakeSpeed);
+        });
+      }
+    )
+  );
+}
+//TODO: get custom mesh to work
+function addGrapesNom(scene: Scene): Mesh {
+  SceneLoader.ImportMesh("", "/assets/", "grapes.babylon", scene, function (
+    grapes
+  ) {
+    return grapes[0];
+  });
+  return null;
 }
 
 export function sleep(milliseconds) {

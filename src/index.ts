@@ -27,7 +27,8 @@ import { addLabelToScene, updateScore } from "./score";
 import * as cannon from "cannon";
 
 import { createBoxEnv } from "./envBox";
-import { createSnake, addNom } from "./snake";
+import { createSnake } from "./snake";
+import { addNom } from "./noms";
 
 // Get the canvas DOM element
 var canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
@@ -145,7 +146,6 @@ function registerSnakeController(vrHelper) {
           console.log("y " + stickValues.y);
           if (stickValues.x > 0 && stickValues.y > 0) {
             console.log("move right");
-
             Animation.CreateAndStartAnimation(
               "anim",
               snake,
@@ -156,6 +156,16 @@ function registerSnakeController(vrHelper) {
               new Vector3(100, 0, 0),
               Animation.ANIMATIONLOOPMODE_CONSTANT
             );
+
+            // Animation.CreateMergeAndStartAnimation(
+            //   "rotAnim",
+            //   snake,
+            //   "rotation",
+            //   1,
+            //   1,
+            //   snake.position,
+            //   new Vector3(0, 200, 0)
+            // );
           }
           //move up
           else if (stickValues.y > 0 && stickValues.x < 0) {
