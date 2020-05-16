@@ -10,23 +10,7 @@ import {
   VRExperienceHelper,
 } from "babylonjs";
 
-export function createBoxEnv(scene: Scene): VRExperienceHelper {
-  var ground = MeshBuilder.CreateGround(
-    "ground",
-    { width: 100, height: 100 },
-    scene
-  );
-  //ground.material = groundMaterial;
-  ground.rotation = new Vector3(0, 0, 0);
-  ground.position.x = 0;
-  ground.position.y = 0;
-  ground.position.z = 0;
-  ground.physicsImpostor = new PhysicsImpostor(
-    ground,
-    PhysicsImpostor.BoxImpostor,
-    { mass: 0, friction: 0, restitution: 0 }
-  );
-
+export function createBoxEnv(scene: Scene) {
   var top = MeshBuilder.CreatePlane("top", { width: 150, height: 100 }, scene);
   top.position.x = 0;
   top.position.y = 50;
@@ -49,15 +33,8 @@ export function createBoxEnv(scene: Scene): VRExperienceHelper {
   createWall("East", 30, 0, 0, scene);
   createWall("West", -30, 0, 0, scene);
 
-  var vrHelper = scene.createDefaultVRExperience({
-    createDeviceOrientationCamera: false,
-  });
-  vrHelper.enableTeleportation({ floorMeshes: [ground] });
-
   var light = new HemisphericLight("HemiLight", new Vector3(0, 5, 5), scene);
   light.intensity = 5;
-
-  return vrHelper;
 }
 
 //helper function to create walls

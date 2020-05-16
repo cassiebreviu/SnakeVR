@@ -10,8 +10,8 @@ import {
   FreeCamera,
   StickValues,
   WebVRController,
-  ExecuteCodeAction,
-  ActionManager,
+  Animation,
+  SixDofDragBehavior,
   CannonJSPlugin,
   PhysicsImpostor,
 } from "babylonjs";
@@ -43,12 +43,13 @@ let snake: Mesh = null;
 //snake globals
 let snakeLength = 3;
 let snakeBody = Array<Mesh>();
-let snakeSpeed = 0.03;
+//snake speed is animation frame per second
+let snakeSpeed = 5;
 
 function createScene(): Scene {
   scene = new Scene(engine);
   //create camera
-  camera = new FreeCamera("camera", new Vector3(0, 30, -10), scene);
+  camera = new FreeCamera("camera", new Vector3(0, 0, -10), scene);
   camera.attachControl(canvas, true);
 
   //add physics engine
@@ -56,7 +57,27 @@ function createScene(): Scene {
   scene.enablePhysics(new Vector3(0, 0, 0), cannonPlugin);
 
   //create box environment
-  var vrHelper = createBoxEnv(scene);
+  createBoxEnv(scene);
+
+  var ground = MeshBuilder.CreateGround(
+    "ground",
+    { width: 100, height: 100 },
+    scene
+  );
+  //ground.material = groundMaterial;
+  ground.rotation = new Vector3(0, 0, 0);
+  ground.position.x = 0;
+  ground.position.y = -20;
+  ground.position.z = 0;
+  ground.physicsImpostor = new PhysicsImpostor(
+    ground,
+    PhysicsImpostor.BoxImpostor,
+    { mass: 0, friction: 0, restitution: 0 }
+  );
+  var vrHelper = scene.createDefaultVRExperience({
+    createDeviceOrientationCamera: false,
+  });
+  vrHelper.enableTeleportation({ floorMeshes: [ground] });
 
   snake = createSnake(scene, snakeLength, snakeBody, snake);
   startGameButton();
@@ -74,7 +95,7 @@ var startGameButton = () => {
   manager.addControl(panel);
 
   panel.margin = 0.02;
-  panel.position.y = 30;
+  panel.position.y = 0;
   var button = new Button3D();
   panel.addControl(button);
   button.onPointerUpObservable.add(function () {
@@ -119,27 +140,70 @@ function registerSnakeController(vrHelper) {
   vrHelper.onControllerMeshLoaded.add((webVRController: WebVRController) => {
     webVRController.onPadValuesChangedObservable.add(
       (stickValues: StickValues) => {
-        //adding this because the on left stick fires for both right and left for some reason
-        console.log("x " + stickValues.x);
-        console.log("y " + stickValues.y);
-        if (stickValues.x > 0) {
-          console.log("move right");
-          snake.position.x = snake.position.x + distance;
-        }
-        //move up
-        else if (stickValues.y > 0) {
-          console.log("move up");
-          snake.position.y = snake.position.y + distance;
-        }
-        //move left
-        else if (stickValues.x < 0) {
-          console.log("move left");
-          snake.position.x = snake.position.x - distance;
-        }
-        //move down
-        else if (stickValues.y < 0) {
-          console.log("move down");
-          snake.position.y = snake.position.y - distance;
+        if (webVRController.hand == "right") {
+          console.log("right hand trigger");
+        } else if ((webVRController.hand = "left")) {
+          console.log("left hand triggered");
+          console.log("x " + stickValues.x);
+          console.log("y " + stickValues.y);
+          if (stickValues.x > 0) {
+            console.log("move right");
+
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(100, 0, 0),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          }
+          //move up
+          else if (stickValues.y > 0) {
+            console.log("move up");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(0, 100, 0),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          }
+          //move left
+          else if (stickValues.x < 0) {
+            console.log("move left");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(-100, 0, 0),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          }
+          //move down
+          else if (stickValues.y < 0) {
+            console.log("move down");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(0, -100, 0),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          }
+          // var sixDofDragBehavior = new SixDofDragBehavior();
+          // snake.addBehavior(sixDofDragBehavior);
         }
       }
     );

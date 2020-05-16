@@ -49,7 +49,7 @@ export function createSnake(
   snake.physicsImpostor = new PhysicsImpostor(
     snake,
     PhysicsImpostor.BoxImpostor,
-    { mass: 1, friction: 0 },
+    { mass: 0, friction: 1 },
     scene
   );
 

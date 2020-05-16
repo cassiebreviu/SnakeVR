@@ -13,3 +13,7 @@ Run the project <br>
 
 Open in VS Code <br>
 `code .`
+
+### Resources
+
+[Build the Exploding Spheres Game](https://github.com/cassieview/student-hack-resources/tree/master/SpatialWorkshops/WebVrGameTypeScript)
