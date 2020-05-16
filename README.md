@@ -1,7 +1,5 @@
 # WebVR BabylonJS Snake VR
 
-![game img]()
-
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/en/download/)
@@ -43,14 +41,19 @@ Run the project <br>
 Open in VS Code <br>
 `code .`
 
-### Steps to Build this Project!
-
-## Steps
+### Option 2: Steps to Build this Project!
 
 [Step 1 - Clone starter template project and create scene](/steps/step1.md) </br>
 [Step 2 - Project Architecture - add](/steps/step2.md)</br>
 [Step 3 - Host on Azure](/steps/step3.md)
 
-### Resources
+## Resources
 
-[Build the Exploding Spheres Game](https://github.com/cassieview/student-hack-resources/tree/master/SpatialWorkshops/WebVrGameTypeScript)
+### BabylonJS
+
+[Babylon Playground](https://www.babylonjs-playground.com/) <br>
+[Babylon Docs](https://doc.babylonjs.com/)
+
+### A step-by-step guide to build the Exploding Spheres game!
+
+[Build the Exploding Spheres Game](https://github.com/cassieview/student-hack-resources/tree/master/SpatialWorkshops/WebVrGameTypeScript) <br><br>
