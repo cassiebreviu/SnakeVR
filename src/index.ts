@@ -1,8 +1,5 @@
 import {
   Scene,
-  StandardMaterial,
-  Color4,
-  Texture,
   MeshBuilder,
   Vector3,
   Engine,
@@ -11,18 +8,10 @@ import {
   StickValues,
   WebVRController,
   Animation,
-  SixDofDragBehavior,
   CannonJSPlugin,
   PhysicsImpostor,
 } from "babylonjs";
-import {
-  GUI3DManager,
-  StackPanel3D,
-  Button3D,
-  TextBlock,
-  AdvancedDynamicTexture,
-  StackPanel,
-} from "babylonjs-gui";
+import { GUI3DManager, StackPanel3D, Button3D, TextBlock } from "babylonjs-gui";
 import { addLabelToScene, updateScore } from "./score";
 import * as cannon from "cannon";
 
