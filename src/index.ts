@@ -40,9 +40,6 @@ var engine = new Engine(canvas, true, {
 let camera = null;
 let isGameActive = false;
 let snake: Mesh = null;
-//snake globals
-let snakeLength = 3;
-let snakeBody = Array<Mesh>();
 //snake speed is animation frame per second
 let snakeSpeed = 5;
 
@@ -79,7 +76,7 @@ function createScene(): Scene {
   });
   vrHelper.enableTeleportation({ floorMeshes: [ground] });
 
-  snake = createSnake(scene, snakeLength, snakeBody, snake);
+  snake = createSnake(scene);
   startGameButton();
   addLabelToScene();
   registerSnakeController(vrHelper);
@@ -146,7 +143,7 @@ function registerSnakeController(vrHelper) {
           console.log("left hand triggered");
           console.log("x " + stickValues.x);
           console.log("y " + stickValues.y);
-          if (stickValues.x > 0) {
+          if (stickValues.x > 0 && stickValues.y > 0) {
             console.log("move right");
 
             Animation.CreateAndStartAnimation(
@@ -161,8 +158,8 @@ function registerSnakeController(vrHelper) {
             );
           }
           //move up
-          else if (stickValues.y > 0) {
-            console.log("move up");
+          else if (stickValues.y > 0 && stickValues.x < 0) {
+            console.log("move down");
             Animation.CreateAndStartAnimation(
               "anim",
               snake,
@@ -170,7 +167,7 @@ function registerSnakeController(vrHelper) {
               snakeSpeed,
               100,
               snake.position,
-              new Vector3(0, 100, 0),
+              new Vector3(0, -100, 0),
               Animation.ANIMATIONLOOPMODE_CONSTANT
             );
           }
@@ -190,7 +187,7 @@ function registerSnakeController(vrHelper) {
           }
           //move down
           else if (stickValues.y < 0) {
-            console.log("move down");
+            console.log("move up");
             Animation.CreateAndStartAnimation(
               "anim",
               snake,
@@ -198,7 +195,7 @@ function registerSnakeController(vrHelper) {
               snakeSpeed,
               100,
               snake.position,
-              new Vector3(0, -100, 0),
+              new Vector3(0, 100, 0),
               Animation.ANIMATIONLOOPMODE_CONSTANT
             );
           }

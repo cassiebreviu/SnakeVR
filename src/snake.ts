@@ -20,30 +20,20 @@ import { addParticlesToMesh, removeParticlesFromMesh } from "./particles";
 import { incrementScore } from "./score";
 import { sleep } from "./noms";
 
-export function createSnake(
-  scene: Scene,
-  snakeLength: number,
-  snakeBody: Array<Mesh>,
-  snake: Mesh
-) {
+export function createSnake(scene: Scene) {
   var mat1 = new StandardMaterial("mat0", scene);
   mat1.diffuseTexture = new Texture("https://i.imgur.com/3ylrOlA.jpg", scene);
   mat1.diffuseTexture.wrapU = 2;
   mat1.diffuseTexture.wrapV = 4;
 
-  for (let i = 0; i < snakeLength; i++) {
-    var snakeLink = MeshBuilder.CreateBox(
-      "snake01",
-      {
-        size: 1,
-      },
-      scene
-    );
-    snakeLink.material = mat1;
-    snakeLink.position.y = i;
-    snakeBody.push(snakeLink);
-  }
-  var snake = Mesh.MergeMeshes(snakeBody);
+  var snake = MeshBuilder.CreateBox(
+    "snake01",
+    {
+      size: 1,
+    },
+    scene
+  );
+  snake.material = mat1;
 
   //add click to change direction of snake
   snake.physicsImpostor = new PhysicsImpostor(
