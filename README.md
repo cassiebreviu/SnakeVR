@@ -57,3 +57,6 @@ Open in VS Code <br>
 ### A step-by-step guide to build the Exploding Spheres game!
 
 [Build the Exploding Spheres Game](https://github.com/cassieview/student-hack-resources/tree/master/SpatialWorkshops/WebVrGameTypeScript) <br><br>
+
+### Game starter template
+[BabylonJS Webpack TypeScript Starter Project](https://github.com/cassieview/babylonjs-webpack-typescript-starter-project)
