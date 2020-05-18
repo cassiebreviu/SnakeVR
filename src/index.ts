@@ -10,8 +10,9 @@ import {
   Animation,
   CannonJSPlugin,
   PhysicsImpostor,
+  ExtendedGamepadButton,
 } from "babylonjs";
-import { GUI3DManager, StackPanel3D, Button3D, TextBlock } from "babylonjs-gui";
+import { TextBlock, AdvancedDynamicTexture } from "babylonjs-gui";
 import { addLabelToScene, updateScore } from "./score";
 import * as cannon from "cannon";
 
@@ -32,12 +33,15 @@ let isGameActive = false;
 let snake: Mesh = null;
 //snake speed is animation frame per second
 let snakeSpeed = 5;
+let attempts = 0;
+let gameText = new TextBlock();
 
 function createScene(): Scene {
   scene = new Scene(engine);
   //create camera
   camera = new FreeCamera("camera", new Vector3(0, 0, -10), scene);
   camera.attachControl(canvas, true);
+  //camera.inputs.clear();
 
   //add physics engine
   var cannonPlugin = new CannonJSPlugin(true, 10, cannon);
@@ -61,54 +65,47 @@ function createScene(): Scene {
     { mass: 0, friction: 0.5, restitution: 0 }
   );
   addSnakeInteraction(ground, snake, scene);
-  var vrHelper = scene.createDefaultVRExperience({
-    createDeviceOrientationCamera: false,
-  });
-  vrHelper.enableTeleportation({ floorMeshes: [ground] });
+  var vrHelper = scene.createDefaultVRExperience();
+  //vrHelper.enableTeleportation({ floorMeshes: [ground] });
 
   //create box environment
   createBoxEnv(scene, snake);
-  startGameButton();
   addLabelToScene();
   registerSnakeController(vrHelper);
 
+  gameText.text = "Press right trigger to play game";
+  gameText.color = "white";
+  gameText.fontSize = 25;
+  var advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI(
+    "helperText",
+    true
+  );
+  advancedTexture.addControl(gameText);
   return scene;
 }
 
-var startGameButton = () => {
-  // Create the 3D UI managers
-  var manager = new GUI3DManager(scene);
-  // Create a horizontal stack panel
-  var panel = new StackPanel3D();
-  manager.addControl(panel);
-
-  panel.margin = 0.02;
-  panel.position.y = 0;
-  var button = new Button3D();
-  panel.addControl(button);
-  button.onPointerUpObservable.add(function () {
-    //reset score
-    updateScore(0);
-    //start movement
-    isGameActive = true;
-    addNom(scene, snake, snakeSpeed);
-    //addAppleNom(scene);
-    //addGrapesNom(scene);
-    //addOrangeNom(scene);
-    panel.removeControl(button);
-  });
-
-  var text1 = new TextBlock();
-  text1.text = "Start Game";
-  text1.color = "white";
-  text1.fontSize = 40;
-  button.content = text1;
+var startGame = () => {
+  if (attempts > 0) {
+    attempts++;
+    snake.isVisible = true;
+    snake = createSnake(scene);
+  }
+  //reset score
+  updateScore(0);
+  //start movement
+  isGameActive = true;
+  addNom(scene, snake, snakeSpeed);
+  //addAppleNom(scene);
+  //addGrapesNom(scene);
+  //addOrangeNom(scene);
+  gameText.isVisible = false;
 };
 
 export function stopGame() {
   isGameActive = false;
   updateScore(0);
-  //refresh page
+  gameText.isVisible = true;
+  gameText.text = "Game Over. Press right trigger to try again!";
 }
 
 // call the createScene function
@@ -128,12 +125,21 @@ function registerSnakeController(vrHelper) {
   let distance = snakeSpeed * speedDelta * deltaTime;
 
   vrHelper.onControllerMeshLoaded.add((webVRController: WebVRController) => {
+    webVRController.onTriggerStateChangedObservable.add(
+      (trigger: ExtendedGamepadButton) => {
+        if (webVRController.hand == "right") {
+          if (trigger.pressed && !isGameActive) {
+            startGame();
+          }
+        }
+      }
+    );
     webVRController.onPadValuesChangedObservable.add(
       (stickValues: StickValues) => {
         if (webVRController.hand == "right") {
-          console.log("right hand trigger");
+          console.log("right hand joystick");
         } else if ((webVRController.hand = "left")) {
-          console.log("left hand triggered");
+          console.log("left hand joystick");
           console.log("x " + stickValues.x);
           console.log("y " + stickValues.y);
           if (stickValues.x > 0 && stickValues.y > 0) {
