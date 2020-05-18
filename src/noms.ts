@@ -31,7 +31,7 @@ export function addNom(scene: Scene, snake: Mesh, snakeSpeed: number) {
     scene
   );
   food.material = foodMaterial;
-  food.position = new Vector3(Math.random(), Math.random(), Math.random());
+  food.position = new Vector3(Math.random(), Math.random(), 0);
 
   // Intersections
   food.actionManager = new ActionManager(scene);
@@ -48,21 +48,10 @@ export function addNom(scene: Scene, snake: Mesh, snakeSpeed: number) {
           removeParticlesFromMesh(particleSystem);
           let currentScore = incrementScore();
           //add new mesh length to snake
-          var snakeLink = MeshBuilder.CreateBox(
-            "snake01",
-            {
-              size: 1,
-            },
-            scene
-          );
-          //TODO: stop snake movement to add mesh
           let currentSpeed = snakeSpeed;
-          snakeSpeed = 0;
-          snakeLink.position.x = snake.position.x + currentScore;
-          snakeLink.position.y = snake.position.y;
-          snakeLink.position.z = snake.position.z;
-          snake.addChild(snakeLink);
 
+          //scale snake box longer here
+          snake.scaling.addInPlace(new Vector3(1, 0, 0));
           //increase speed
           snakeSpeed = currentSpeed * 2;
           //add a new nom

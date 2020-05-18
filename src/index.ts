@@ -15,7 +15,7 @@ import { GUI3DManager, StackPanel3D, Button3D, TextBlock } from "babylonjs-gui";
 import { addLabelToScene, updateScore } from "./score";
 import * as cannon from "cannon";
 
-import { createBoxEnv } from "./envBox";
+import { createBoxEnv, addSnakeInteraction } from "./envBox";
 import { createSnake } from "./snake";
 import { addNom } from "./noms";
 
@@ -43,8 +43,7 @@ function createScene(): Scene {
   var cannonPlugin = new CannonJSPlugin(true, 10, cannon);
   scene.enablePhysics(new Vector3(0, 0, 0), cannonPlugin);
 
-  //create box environment
-  createBoxEnv(scene);
+  snake = createSnake(scene);
 
   var ground = MeshBuilder.CreateGround(
     "ground",
@@ -59,14 +58,16 @@ function createScene(): Scene {
   ground.physicsImpostor = new PhysicsImpostor(
     ground,
     PhysicsImpostor.BoxImpostor,
-    { mass: 0, friction: 0, restitution: 0 }
+    { mass: 0, friction: 0.5, restitution: 0 }
   );
+  addSnakeInteraction(ground, snake, scene);
   var vrHelper = scene.createDefaultVRExperience({
     createDeviceOrientationCamera: false,
   });
   vrHelper.enableTeleportation({ floorMeshes: [ground] });
 
-  snake = createSnake(scene);
+  //create box environment
+  createBoxEnv(scene, snake);
   startGameButton();
   addLabelToScene();
   registerSnakeController(vrHelper);
@@ -104,9 +105,11 @@ var startGameButton = () => {
   button.content = text1;
 };
 
-var stopGame = () => {
+export function stopGame() {
   isGameActive = false;
-};
+  updateScore(0);
+  //refresh page
+}
 
 // call the createScene function
 var scene = createScene();

@@ -1,16 +1,22 @@
 import {
   Scene,
   StandardMaterial,
-  Color4,
+  ActionManager,
   Texture,
   MeshBuilder,
   Vector3,
   HemisphericLight,
   PhysicsImpostor,
-  VRExperienceHelper,
+  ExecuteCodeAction,
+  Mesh,
 } from "babylonjs";
 
-export function createBoxEnv(scene: Scene) {
+import { addParticlesToMesh } from "./particles";
+import { sleep } from "./noms";
+import { removeParticlesFromMesh } from "./particles";
+import { stopGame } from "./index";
+
+export function createBoxEnv(scene: Scene, snake: Mesh) {
   var top = MeshBuilder.CreatePlane("top", { width: 150, height: 100 }, scene);
   top.position.x = 0;
   top.position.y = 50;
@@ -24,14 +30,14 @@ export function createBoxEnv(scene: Scene) {
   top.physicsImpostor = new PhysicsImpostor(
     top,
     BABYLON.PhysicsImpostor.BoxImpostor,
-    { mass: 0, restitution: 0, friction: 1 },
+    { mass: 0, friction: 0, restitution: 0.5 },
     scene
   );
 
-  createWall("North", 0, 0, 30, scene);
-  createWall("South", 0, 0, -30, scene);
-  createWall("East", 30, 0, 0, scene);
-  createWall("West", -30, 0, 0, scene);
+  createWall("North", 0, 0, 30, scene, snake);
+  createWall("South", 0, 0, -30, scene, snake);
+  createWall("East", 30, 0, 0, scene, snake);
+  createWall("West", -30, 0, 0, scene, snake);
 
   var light = new HemisphericLight("HemiLight", new Vector3(0, 5, 5), scene);
   light.intensity = 5;
@@ -43,7 +49,8 @@ function createWall(
   positionX: number,
   positionY: number,
   positionZ: number,
-  scene: Scene
+  scene: Scene,
+  snake: Mesh
 ) {
   var groundMaterial = new StandardMaterial("groundMaterial", scene);
   groundMaterial.diffuseTexture = new Texture(
@@ -72,7 +79,28 @@ function createWall(
   wall.physicsImpostor = new PhysicsImpostor(
     wall,
     BABYLON.PhysicsImpostor.BoxImpostor,
-    { mass: 0, restitution: 0, friction: 1 },
+    { mass: 0, restitution: 0.5, friction: 0 },
     scene
+  );
+  addSnakeInteraction(wall, snake, scene);
+}
+
+export function addSnakeInteraction(plane: Mesh, snake: Mesh, scene: Scene) {
+  plane.actionManager = new ActionManager(scene);
+  plane.actionManager.registerAction(
+    new ExecuteCodeAction(
+      {
+        trigger: ActionManager.OnIntersectionEnterTrigger,
+        parameter: snake,
+      },
+      function () {
+        var particleSystem = addParticlesToMesh(snake, scene);
+        scene.removeMesh(snake);
+        sleep(250).then(() => {
+          removeParticlesFromMesh(particleSystem);
+          stopGame();
+        });
+      }
+    )
   );
 }

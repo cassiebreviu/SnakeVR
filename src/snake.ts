@@ -16,10 +16,6 @@ import {
   PhysicsImpostor,
 } from "babylonjs";
 
-import { addParticlesToMesh, removeParticlesFromMesh } from "./particles";
-import { incrementScore } from "./score";
-import { sleep } from "./noms";
-
 export function createSnake(scene: Scene) {
   var mat1 = new StandardMaterial("mat0", scene);
   mat1.diffuseTexture = new Texture("https://i.imgur.com/3ylrOlA.jpg", scene);
@@ -39,7 +35,7 @@ export function createSnake(scene: Scene) {
   snake.physicsImpostor = new PhysicsImpostor(
     snake,
     PhysicsImpostor.BoxImpostor,
-    { mass: 0, friction: 1 },
+    { mass: 2, friction: 0, restitution: 0.5 },
     scene
   );
 
