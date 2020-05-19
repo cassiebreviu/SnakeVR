@@ -16,7 +16,7 @@ import { TextBlock, AdvancedDynamicTexture } from "babylonjs-gui";
 import { addLabelToScene, updateScore } from "./score";
 import * as cannon from "cannon";
 
-import { createBoxEnv, addSnakeInteraction } from "./envBox";
+import { createBoxEnv } from "./envBox";
 import { createSnake } from "./snake";
 import { addNom } from "./noms";
 
@@ -48,25 +48,7 @@ function createScene(): Scene {
   scene.enablePhysics(new Vector3(0, 0, 0), cannonPlugin);
 
   snake = createSnake(scene);
-
-  var ground = MeshBuilder.CreateGround(
-    "ground",
-    { width: 100, height: 100 },
-    scene
-  );
-  //ground.material = groundMaterial;
-  ground.rotation = new Vector3(0, 0, 0);
-  ground.position.x = 0;
-  ground.position.y = -20;
-  ground.position.z = 0;
-  ground.physicsImpostor = new PhysicsImpostor(
-    ground,
-    PhysicsImpostor.BoxImpostor,
-    { mass: 0, friction: 0.5, restitution: 0 }
-  );
-  addSnakeInteraction(ground, snake, scene);
   var vrHelper = scene.createDefaultVRExperience();
-  //vrHelper.enableTeleportation({ floorMeshes: [ground] });
 
   //create box environment
   createBoxEnv(scene, snake);
