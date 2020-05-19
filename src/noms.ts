@@ -31,7 +31,11 @@ export function addNom(scene: Scene, snake: Mesh, snakeSpeed: number) {
     scene
   );
   food.material = foodMaterial;
-  food.position = new Vector3(Math.random(), Math.random(), 0);
+  food.position = new Vector3(
+    Math.random() * 5,
+    Math.random() * 5,
+    Math.random() * 5
+  );
 
   // Intersections
   food.actionManager = new ActionManager(scene);
