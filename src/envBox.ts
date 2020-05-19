@@ -9,6 +9,7 @@ import {
   PhysicsImpostor,
   ExecuteCodeAction,
   Mesh,
+  Material,
 } from "babylonjs";
 
 import { addParticlesToMesh } from "./particles";
@@ -17,11 +18,17 @@ import { removeParticlesFromMesh } from "./particles";
 import { stopGame } from "./index";
 
 export function createBoxEnv(scene: Scene, snake: Mesh) {
+  var groundMaterial = new StandardMaterial("groundMaterial", scene);
+  groundMaterial.diffuseTexture = new Texture(
+    "https://i.imgur.com/bbe1IMe.jpg",
+    scene
+  );
+
   var top = MeshBuilder.CreatePlane("top", { width: 150, height: 100 }, scene);
   top.position.x = 0;
   top.position.y = 50;
   top.position.z = 0;
-  //top.material = groundMaterial;
+  top.material = groundMaterial;
   top.rotation = Vector3.RotationFromAxis(
     new Vector3(0, 0, 0),
     new Vector3(0, 0, 0.5),
@@ -33,11 +40,26 @@ export function createBoxEnv(scene: Scene, snake: Mesh) {
     { mass: 0, friction: 0, restitution: 0.5 },
     scene
   );
-
-  createWall("North", 0, 0, 30, scene, snake);
-  createWall("South", 0, 0, -30, scene, snake);
-  createWall("East", 30, 0, 0, scene, snake);
-  createWall("West", -30, 0, 0, scene, snake);
+  var ground = MeshBuilder.CreateGround(
+    "ground",
+    { width: 100, height: 100 },
+    scene
+  );
+  ground.material = groundMaterial;
+  ground.rotation = new Vector3(0, 0, 0);
+  ground.position.x = 0;
+  ground.position.y = -20;
+  ground.position.z = 0;
+  ground.physicsImpostor = new PhysicsImpostor(
+    ground,
+    PhysicsImpostor.BoxImpostor,
+    { mass: 0, friction: 0.5, restitution: 0 }
+  );
+  addSnakeInteraction(ground, snake, scene);
+  createWall("North", 0, 0, 30, scene, snake, groundMaterial);
+  createWall("South", 0, 0, -30, scene, snake, groundMaterial);
+  createWall("East", 30, 0, 0, scene, snake, groundMaterial);
+  createWall("West", -30, 0, 0, scene, snake, groundMaterial);
 
   var light = new HemisphericLight("HemiLight", new Vector3(0, 5, 5), scene);
   light.intensity = 5;
@@ -50,14 +72,9 @@ function createWall(
   positionY: number,
   positionZ: number,
   scene: Scene,
-  snake: Mesh
+  snake: Mesh,
+  groundMaterial: Material
 ) {
-  var groundMaterial = new StandardMaterial("groundMaterial", scene);
-  groundMaterial.diffuseTexture = new Texture(
-    "https://i.imgur.com/bbe1IMe.jpg",
-    scene
-  );
-
   var wall = MeshBuilder.CreateBox(
     direction,
     {
@@ -85,7 +102,7 @@ function createWall(
   addSnakeInteraction(wall, snake, scene);
 }
 
-export function addSnakeInteraction(plane: Mesh, snake: Mesh, scene: Scene) {
+function addSnakeInteraction(plane: Mesh, snake: Mesh, scene: Scene) {
   plane.actionManager = new ActionManager(scene);
   plane.actionManager.registerAction(
     new ExecuteCodeAction(
