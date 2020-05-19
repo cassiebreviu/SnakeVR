@@ -137,6 +137,31 @@ function registerSnakeController(vrHelper) {
     webVRController.onPadValuesChangedObservable.add(
       (stickValues: StickValues) => {
         if (webVRController.hand == "right") {
+          if (stickValues.y < 0) {
+            console.log("move up");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(0, 0, 100),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          } else if (stickValues.y > 0 && stickValues.x < 0) {
+            console.log("move down");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(0, 0, -100),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          }
           console.log("right hand joystick");
         } else if ((webVRController.hand = "left")) {
           console.log("left hand joystick");
@@ -193,7 +218,7 @@ function registerSnakeController(vrHelper) {
               Animation.ANIMATIONLOOPMODE_CONSTANT
             );
           }
-          //move down
+          //move up
           else if (stickValues.y < 0) {
             console.log("move up");
             Animation.CreateAndStartAnimation(
