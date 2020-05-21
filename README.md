@@ -44,7 +44,7 @@ Open in VS Code <br>
 ### Option 2: Steps to Build this Project!
 
 [Step 1 - Clone starter template project and create scene](/steps/step1.md) </br>
-[Step 2 - Project Architecture - add](/steps/step2.md)</br>
+[Step 2 - Project Architecture](/steps/step2.md)</br>
 [Step 3 - Host on Azure](/steps/step3.md)
 
 ## Resources
