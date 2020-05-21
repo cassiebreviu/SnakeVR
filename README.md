@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/en/download/)
-- [Visual Studio Code](https://code.visualstudio.com/download?WT.mc_id=devto-blog-casiljan)
+- [Visual Studio Code](https://code.visualstudio.com/download?WT.mc_id=github-talk-cassieb)
 
 ### What is BabylonJS and CannonJS?
 
