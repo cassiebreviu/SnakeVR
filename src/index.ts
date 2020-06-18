@@ -49,7 +49,7 @@ var createScene = async () => {
   var cannonPlugin = new CannonJSPlugin(true, 10, cannon);
   scene.enablePhysics(new Vector3(0, 0, 0), cannonPlugin);
   snake = createSnake(scene);
-  SetUpEnvironment(scene, snake, xrHelper);
+  SetUpEnvironment(scene, snake, engine, xrHelper);
   return scene;
 };
 

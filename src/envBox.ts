@@ -11,25 +11,29 @@ import {
   Mesh,
   Material,
   WebXRExperienceHelper,
+  Engine,
 } from "babylonjs";
 import { TextBlock, AdvancedDynamicTexture } from "babylonjs-gui";
 import { addParticlesToMesh } from "./particles";
 import { sleep } from "./noms";
 import { removeParticlesFromMesh } from "./particles";
 import { addLabelToScene, updateScore } from "./score";
+import { registerSnakeController } from "./controllers";
 
 let gameText = new TextBlock();
 
 export function SetUpEnvironment(
   scene: Scene,
   snake: Mesh,
+  engine: Engine,
   xrHelper: WebXRExperienceHelper
 ) {
   //create box environment
   createBoxEnv(scene, snake);
   addLabelToScene();
   addLabelToScene();
-  //registerSnakeController(xrHelper);
+
+  registerSnakeController(engine, snake, scene, xrHelper, gameText);
 
   gameText.text = "Press right trigger to play game";
   gameText.color = "white";
