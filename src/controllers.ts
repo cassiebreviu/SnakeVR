@@ -40,110 +40,111 @@ var startGame = (
   gameText.isVisible = false;
 };
 
-// function registerSnakeController(
-//   engine: Engine,
-//   snake: Mesh,
-//   xrHelper: WebXRExperienceHelper
-// ) {
-//   let speedDelta = 60 / 1000;
-//   let deltaTime = engine.getDeltaTime();
-//   let distance = snakeSpeed * speedDelta * deltaTime;
-//   var xrController = null;
-//   xrController.motionController.onModelLoadedObservable.add((inputSource) => {
-//     // webVRController.onTriggerStateChangedObservable.add(
-//     // (trigger: ExtendedGamepadButton) => {
-//     //   if (webVRController.hand == "right") {
-//     //     if (trigger.pressed && !isGameActive) {
-//     //       startGame();
-//     //     }
-//     //   }
-//     // }
-//     // );
-//     xrController.motionController.onPadValuesChangedObservable.add(
-//       (stickValues: StickValues) => {
-//         if (webVRController.hand == "right") {
-//           if (stickValues.y < 0) {
-//             console.log("move up");
-//             Animation.CreateAndStartAnimation(
-//               "anim",
-//               snake,
-//               "position",
-//               snakeSpeed,
-//               100,
-//               snake.position,
-//               new Vector3(0, 0, 100),
-//               Animation.ANIMATIONLOOPMODE_CONSTANT
-//             );
-//           } else if (stickValues.y > 0 && stickValues.x < 0) {
-//             console.log("move down");
-//             Animation.CreateAndStartAnimation(
-//               "anim",
-//               snake,
-//               "position",
-//               snakeSpeed,
-//               100,
-//               snake.position,
-//               new Vector3(0, 0, -100),
-//               Animation.ANIMATIONLOOPMODE_CONSTANT
-//             );
-//           }
-//           console.log("right hand joystick");
-//         } else if ((webVRController.hand = "left")) {
-//           console.log("left hand joystick");
-//           console.log("x " + stickValues.x);
-//           console.log("y " + stickValues.y);
-//           if (stickValues.x > 0 && stickValues.y > 0) {
-//             console.log("move right");
-//             Animation.CreateAndStartAnimation(
-//               "anim",
-//               snake,
-//               "position",
-//               snakeSpeed,
-//               100,
-//               snake.position,
-//               new Vector3(100, 0, 0),
-//               Animation.ANIMATIONLOOPMODE_CONSTANT
-//             );
-//             // Animation.CreateMergeAndStartAnimation(
-//             //   "rotAnim",
-//             //   snake,
-//             //   "rotation",
-//             //   1,
-//             //   1,
-//             //   snake.position,
-//             //   new Vector3(0, 200, 0)
-//             // );
-//           }
-//           //move up
-//           else if (stickValues.y > 0 && stickValues.x < 0) {
-//             console.log("move down");
-//             Animation.CreateAndStartAnimation(
-//               "anim",
-//               snake,
-//               "position",
-//               snakeSpeed,
-//               100,
-//               snake.position,
-//               new Vector3(0, -100, 0),
-//               Animation.ANIMATIONLOOPMODE_CONSTANT
-//             );
-//           }
-//           //move left
-//           else if (stickValues.x < 0) {
-//             console.log("move left");
-//             Animation.CreateAndStartAnimation(
-//               "anim",
-//               snake,
-//               "position",
-//               snakeSpeed,
-//               100,
-//               snake.position,
-//               new Vector3(-100, 0, 0),
-//               Animation.ANIMATIONLOOPMODE_CONSTANT
-//             );
-//           }
-//         }
-//       }
-//     );
-//   });
-//}
+function registerSnakeController(
+  engine: Engine,
+  snake: Mesh,
+  xrHelper: WebXRExperienceHelper
+) {
+  let speedDelta = 60 / 1000;
+  let deltaTime = engine.getDeltaTime();
+  let distance = snakeSpeed * speedDelta * deltaTime;
+  var xrController = null;
+
+  xrController.motionController.onModelLoadedObservable.add((inputSource) => {
+    // webVRController.onTriggerStateChangedObservable.add(
+    // (trigger: ExtendedGamepadButton) => {
+    //   if (webVRController.hand == "right") {
+    //     if (trigger.pressed && !isGameActive) {
+    //       startGame();
+    //     }
+    //   }
+    // }
+    // );
+    xrController.motionController.onPadValuesChangedObservable.add(
+      (stickValues: StickValues) => {
+        if (webVRController.hand == "right") {
+          if (stickValues.y < 0) {
+            console.log("move up");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(0, 0, 100),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          } else if (stickValues.y > 0 && stickValues.x < 0) {
+            console.log("move down");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(0, 0, -100),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          }
+          console.log("right hand joystick");
+        } else if ((webVRController.hand = "left")) {
+          console.log("left hand joystick");
+          console.log("x " + stickValues.x);
+          console.log("y " + stickValues.y);
+          if (stickValues.x > 0 && stickValues.y > 0) {
+            console.log("move right");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(100, 0, 0),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+            // Animation.CreateMergeAndStartAnimation(
+            //   "rotAnim",
+            //   snake,
+            //   "rotation",
+            //   1,
+            //   1,
+            //   snake.position,
+            //   new Vector3(0, 200, 0)
+            // );
+          }
+          //move up
+          else if (stickValues.y > 0 && stickValues.x < 0) {
+            console.log("move down");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(0, -100, 0),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          }
+          //move left
+          else if (stickValues.x < 0) {
+            console.log("move left");
+            Animation.CreateAndStartAnimation(
+              "anim",
+              snake,
+              "position",
+              snakeSpeed,
+              100,
+              snake.position,
+              new Vector3(-100, 0, 0),
+              Animation.ANIMATIONLOOPMODE_CONSTANT
+            );
+          }
+        }
+      }
+    );
+  });
+}
