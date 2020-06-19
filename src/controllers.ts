@@ -1,32 +1,14 @@
-import {
-  Mesh,
-  Scene,
-  Engine,
-  WebVRController,
-  ExtendedGamepadButton,
-  StickValues,
-  Vector3,
-  Animation,
-  WebXRExperienceHelper,
-  WebXRControllerPointerSelection,
-  WebXRInputSource,
-  WebXRAbstractMotionController,
-  WebXRInput,
-} from "babylonjs";
-import { TextBlock } from "babylonjs-gui";
+import { Mesh, Scene, Engine } from "babylonjs";
+import { TextBlock, AdvancedDynamicTexture } from "babylonjs-gui";
 import { updateScore } from "./score";
 import { createSnake } from "./snake";
 import { addNom } from "./noms";
 let attempts = 0;
 let snakeSpeed = 5;
 let isGameActive = false;
+let gameText = new TextBlock();
 
-var startGame = (
-  isGameActive: Boolean,
-  snake: Mesh,
-  scene: Scene,
-  gameText: TextBlock
-) => {
+var startGame = (isGameActive: Boolean, snake: Mesh, scene: Scene) => {
   if (attempts > 0) {
     attempts++;
     snake.isVisible = true;
@@ -43,18 +25,33 @@ var startGame = (
   gameText.isVisible = false;
 };
 
+export function stopGame() {
+  isGameActive = false;
+  updateScore(0);
+  gameText.isVisible = true;
+  gameText.text = "Game Over. Press right trigger to try again!";
+}
+
 export function registerSnakeController(
   engine: Engine,
   snake: Mesh,
   scene: Scene,
-  xrHelper,
-  gameText: TextBlock
+  xrHelper
 ) {
   let speedDelta = 60 / 1000;
   let deltaTime = engine.getDeltaTime();
   let distance = snakeSpeed * speedDelta * deltaTime;
 
-  var input = xrHelper.input;
+  //update text
+  gameText.text = "Press right trigger to play game";
+  gameText.color = "white";
+  gameText.fontSize = 25;
+  var advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI(
+    "helperText",
+    true
+  );
+  advancedTexture.addControl(gameText);
+
   xrHelper.input.onControllerAddedObservable.add((inputSource) => {
     inputSource.onMotionControllerInitObservable.add((motionController) => {
       const ids = motionController.getComponentIds();
@@ -69,7 +66,7 @@ export function registerSnakeController(
         console.log(component);
         if (component.pressed && !isGameActive) {
           console.log(component.pressed);
-          startGame(true, snake, scene, gameText);
+          startGame(true, snake, scene);
           isGameActive = true;
         }
       });

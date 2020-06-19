@@ -19,8 +19,7 @@ import { sleep } from "./noms";
 import { removeParticlesFromMesh } from "./particles";
 import { addLabelToScene, updateScore } from "./score";
 import { registerSnakeController } from "./controllers";
-
-let gameText = new TextBlock();
+import { stopGame } from "./controllers";
 
 export function SetUpEnvironment(
   scene: Scene,
@@ -31,18 +30,7 @@ export function SetUpEnvironment(
   //create box environment
   createBoxEnv(scene, snake);
   addLabelToScene();
-  addLabelToScene();
-
-  registerSnakeController(engine, snake, scene, xrHelper, gameText);
-
-  gameText.text = "Press right trigger to play game";
-  gameText.color = "white";
-  gameText.fontSize = 25;
-  var advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI(
-    "helperText",
-    true
-  );
-  advancedTexture.addControl(gameText);
+  registerSnakeController(engine, snake, scene, xrHelper);
 }
 
 function createBoxEnv(scene: Scene, snake: Mesh) {
@@ -143,16 +131,9 @@ function addSnakeInteraction(plane: Mesh, snake: Mesh, scene: Scene) {
         scene.removeMesh(snake);
         sleep(250).then(() => {
           removeParticlesFromMesh(particleSystem);
-          stopGame(false, "");
+          stopGame();
         });
       }
     )
   );
-}
-
-function stopGame(isGameActive: Boolean, gameText) {
-  isGameActive = false;
-  updateScore(0);
-  gameText.isVisible = true;
-  gameText.text = "Game Over. Press right trigger to try again!";
 }
