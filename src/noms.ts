@@ -9,6 +9,7 @@ import {
   ActionManager,
   ExecuteCodeAction,
   AbstractMesh,
+  Skeleton,
 } from "babylonjs";
 import { addParticlesToMesh, removeParticlesFromMesh } from "./particles";
 import { updateScore } from "./game";
@@ -16,10 +17,7 @@ import { updateScore } from "./game";
 let score = 0;
 
 export function addNom(scene: Scene, snake: Mesh) {
-  //meshName is string name of model file "apple.babylon"
-  //var meshOptions = ["grapes.babylon", "apple.babylon", "orange.babylon"];
-
-  addGrapesNom(scene, snake);
+  //addGrapesNom(scene, snake);
 
   var snakeNom = MeshBuilder.CreateSphere(
     "sphere1",
@@ -56,6 +54,7 @@ export function addNom(scene: Scene, snake: Mesh) {
 
           //scale snake box longer here
           snake.scaling.addInPlace(new Vector3(1, 0, 0));
+          //snake.skeleton = new Skeleton("snakeSkeleton", "1", scene);
           //snakeSpeed = currentSpeed * 2;
           //add a new nom
           addNom(scene, snake);

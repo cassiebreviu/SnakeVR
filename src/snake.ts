@@ -40,10 +40,10 @@ export function createSnake(scene: Scene) {
   );
 
   var overrides = new AnimationPropertiesOverride();
+  //overrides.loopMode =
+  //overrides.enableBlending = true;
 
-  overrides.enableBlending = true;
-  overrides.blendingSpeed = 0.1;
-
+  //overrides.blendingSpeed = 0.1;
   snake.animationPropertiesOverride = overrides;
 
   return snake;

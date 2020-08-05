@@ -45,6 +45,17 @@ export function registerSnakeController(
         console.log("current game status: " + gameStatus);
         if (component.pressed && hand === "right" && !gameStatus) {
           startGame(snake, scene);
+          //start up animation
+          Animation.CreateAndStartAnimation(
+            "anim",
+            snake,
+            "position",
+            snakeSpeed,
+            100,
+            snake.position,
+            new Vector3(0, 100, 0),
+            Animation.ANIMATIONLOOPMODE_CONSTANT
+          );
         }
       });
 
