@@ -17,9 +17,8 @@ import { TextBlock, AdvancedDynamicTexture } from "babylonjs-gui";
 import { addParticlesToMesh } from "./particles";
 import { sleep } from "./noms";
 import { removeParticlesFromMesh } from "./particles";
-import { addLabelToScene, updateScore } from "./score";
+import { addLabelToScene, stopGame } from "./game";
 import { registerSnakeController } from "./controllers";
-import { stopGame } from "./controllers";
 
 export function SetUpEnvironment(
   scene: Scene,

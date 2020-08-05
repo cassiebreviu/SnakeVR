@@ -10,9 +10,7 @@ import {
   SceneComponentConstants,
 } from "babylonjs";
 
-import { addLabelToScene, updateScore } from "./score";
 import { createSnake } from "./snake";
-import { addNom } from "./noms";
 import { SetUpEnvironment } from "./envBox";
 import * as cannon from "cannon";
 
@@ -48,7 +46,11 @@ var createScene = async () => {
   //add physics engine
   var cannonPlugin = new CannonJSPlugin(true, 10, cannon);
   scene.enablePhysics(new Vector3(0, 0, 0), cannonPlugin);
+
+  //Create Snake
   snake = createSnake(scene);
+
+  //Create Environment
   SetUpEnvironment(scene, snake, engine, xrHelper);
   return scene;
 };
