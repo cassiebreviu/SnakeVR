@@ -23,6 +23,7 @@ module.exports = {
   plugins: [
     new CopyPlugin([
       { from: "src/assets", to: path.resolve(__dirname, "dist/assets") },
+      { from: "src/sounds", to: path.resolve(__dirname, "dist/sounds") },
       { from: "src/index.html", to: path.resolve(__dirname, "dist") },
     ]),
   ],

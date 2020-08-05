@@ -68,7 +68,7 @@ export function addLabelToScene(): void {
   label.alpha = 0.5;
   label.zIndex = 5;
   label.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-  label.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+  label.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
   advancedTexture.addControl(label);
 
   scoreText.text = "score: 0";

@@ -1,10 +1,12 @@
 import {
   Mesh,
+  Axis,
   Scene,
   Engine,
   Vector3,
   Animation,
   StickValues,
+  Space,
 } from "babylonjs";
 import {
   AdvancedDynamicTexture,
@@ -68,6 +70,11 @@ export function registerSnakeController(
             //move up
             if (stickValues.y < 0) {
               console.log("move up");
+              //console.log(snake.skeleton.bones);
+
+              //snake.skeleton.bones[0].setAxisAngle(new Vector3(0, 100, 0), 0.2);
+              //snake.skeleton.bones[0].rotate(Axis.Z, 0.01, Space.WORLD);
+
               Animation.CreateAndStartAnimation(
                 "anim",
                 snake,

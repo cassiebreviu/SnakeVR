@@ -35,7 +35,7 @@ export function SetUpEnvironment(
 function createBoxEnv(scene: Scene, snake: Mesh) {
   var groundMaterial = new StandardMaterial("groundMaterial", scene);
   groundMaterial.diffuseTexture = new Texture(
-    "https://i.imgur.com/bbe1IMe.jpg",
+    "https://i.imgur.com/JUvgif1.jpg",
     scene
   );
 

@@ -8,7 +8,7 @@ import {
   SceneLoader,
   ActionManager,
   ExecuteCodeAction,
-  AbstractMesh,
+  Sound,
   Skeleton,
 } from "babylonjs";
 import { addParticlesToMesh, removeParticlesFromMesh } from "./particles";
@@ -18,7 +18,7 @@ let score = 0;
 
 export function addNom(scene: Scene, snake: Mesh) {
   //addGrapesNom(scene, snake);
-
+  var omnomnom = new Sound("omnomnom", "/sounds/nom.wav", scene);
   var snakeNom = MeshBuilder.CreateSphere(
     "sphere1",
     { diameter: 0.4, segments: 16 },
@@ -48,13 +48,13 @@ export function addNom(scene: Scene, snake: Mesh) {
       function () {
         var particleSystem = addParticlesToMesh(snakeNom, scene);
         scene.removeMesh(snakeNom);
+        omnomnom.play();
         sleep(250).then(() => {
           removeParticlesFromMesh(particleSystem);
           updateScore(score++);
 
           //scale snake box longer here
           snake.scaling.addInPlace(new Vector3(1, 0, 0));
-          //snake.skeleton = new Skeleton("snakeSkeleton", "1", scene);
           //snakeSpeed = currentSpeed * 2;
           //add a new nom
           addNom(scene, snake);

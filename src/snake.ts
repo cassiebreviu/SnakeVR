@@ -1,10 +1,10 @@
 import {
   Scene,
   StandardMaterial,
-  Color4,
+  Color3,
   Texture,
   MeshBuilder,
-  Vector3,
+  SkeletonViewer,
   Engine,
   Mesh,
   FreeCamera,
@@ -12,8 +12,9 @@ import {
   AnimationPropertiesOverride,
   ExecuteCodeAction,
   ActionManager,
-  PointerDragBehavior,
+  Skeleton,
   PhysicsImpostor,
+  Bone,
 } from "babylonjs";
 
 export function createSnake(scene: Scene) {
@@ -21,7 +22,6 @@ export function createSnake(scene: Scene) {
   mat1.diffuseTexture = new Texture("https://i.imgur.com/3ylrOlA.jpg", scene);
   mat1.diffuseTexture.wrapU = 2;
   mat1.diffuseTexture.wrapV = 4;
-
   var snake = MeshBuilder.CreateBox(
     "snake01",
     {
@@ -39,12 +39,16 @@ export function createSnake(scene: Scene) {
     scene
   );
 
-  var overrides = new AnimationPropertiesOverride();
+  //var overrides = new AnimationPropertiesOverride();
   //overrides.loopMode =
   //overrides.enableBlending = true;
 
   //overrides.blendingSpeed = 0.1;
-  snake.animationPropertiesOverride = overrides;
-
+  //snake.animationPropertiesOverride = overrides;
+  //snake.skeleton = new Skeleton("snakeSkeleton", "1", scene);
+  //snake.skeleton.bones = [
+  //  new Bone("snakeBones1", snake.skeleton),
+  //  new Bone("snakeBones2", snake.skeleton),
+  //];
   return snake;
 }
